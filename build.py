@@ -174,6 +174,12 @@ h1,h2,h3{margin:0;font-family:var(--display);font-weight:700}
 .langs a:not([aria-current]):hover{background:var(--paper)}
 .langs a[lang=si]{font-family:"Noto Sans Sinhala","Iskoola Pota","Nirmala UI",var(--sans)}
 .langs a[lang=ta]{font-family:"Noto Sans Tamil","Latha","Nirmala UI",var(--sans)}
+.badge{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--saffron-ink);background:var(--saffron-soft);border:1px solid var(--saffron-line);padding:2px 8px;border-radius:999px;white-space:nowrap}
+html:lang(si) .badge,html:lang(ta) .badge{text-transform:none;letter-spacing:0;font-size:12px}
+.indie{background:var(--saffron-soft);border-bottom:1px solid var(--saffron-line);font-size:14px;color:var(--body);line-height:1.5}
+.indie .wrap{display:flex;gap:10px;align-items:center;padding-top:9px;padding-bottom:9px}
+.indie .ic{width:18px;height:18px;color:var(--saffron-ink);flex:none}
+.indie p{margin:0}
 .hcta{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:12px;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
 .hcta:hover{background:#000;color:#fff}
 .suggest{background:var(--tint);border-bottom:1px solid #C9D3F2;font-size:15px}
@@ -208,9 +214,9 @@ html:lang(si) .hero h1 .big,html:lang(ta) .hero h1 .big{font-size:clamp(32px,4.6
 .trust li{display:flex;align-items:center;gap:8px}
 .trust .ic{width:18px;height:18px;color:var(--ok);flex:none}
 .copy{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 16px;max-width:560px}
-.copy label{display:block;font-size:14px;color:var(--muted);margin-bottom:8px}
+.copy .copy-label{display:block;font-size:14px;color:var(--muted);margin:0 0 8px}
 .copy .row{display:flex;gap:10px;flex-wrap:wrap}
-.copy input{flex:1 1 260px;min-width:0;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);font:500 13px var(--mono);color:var(--body)}
+.copy code{flex:1 1 260px;min-width:0;display:flex;align-items:center;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);font:500 13px/1.45 var(--mono);color:var(--body);overflow-wrap:anywhere}
 .copy button{min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;font:600 15px var(--sans);cursor:pointer}
 .copy button.ok{background:var(--ok);border-color:var(--ok)}
 .disclose{margin:14px 0 0;font-size:13.5px;color:var(--muted);max-width:40em}
@@ -331,7 +337,7 @@ d.querySelectorAll('[data-copy]').forEach(function(b){
  b.addEventListener('click',function(){
   var v=b.getAttribute('data-copy');
   function done(){var o=b.textContent;b.textContent=b.getAttribute('data-copied');b.classList.add('ok');setTimeout(function(){b.textContent=o;b.classList.remove('ok')},1800)}
-  function fb(){var t=d.getElementById('reflink');if(t){t.select();try{d.execCommand('copy');done()}catch(e){}}}
+  function fb(){var t=d.createElement('textarea');t.value=v;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';d.body.appendChild(t);t.select();try{d.execCommand('copy');done()}catch(e){}d.body.removeChild(t)}
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(v).then(done,fb)}else{fb()}
  });
 });
@@ -480,13 +486,14 @@ def page(lang):
 <a class="skip" href="#main">{T(lang, 'skip')}</a>
 <header class="top">
  <div class="wrap">
-  <a class="brand" href="{rel(lang, page_path(lang))}" aria-label="{esc(CFG['site_name'])}">{LOGO}<span>{brand_text()}</span></a>
+  <a class="brand" href="{rel(lang, page_path(lang))}" aria-label="{esc(CFG['site_name'])}">{LOGO}<span>{brand_text()}</span><em class="badge">{T(lang, 'badge')}</em></a>
   <div class="top-right">
    <nav class="langs" aria-label="{T(lang, 'lang_label')}">{lang_switch(lang)}</nav>
    {ref_a('hcta', T(lang, 'header_cta'), place=f'header-{lang}')}
   </div>
  </div>
 </header>
+<div class="indie"><div class="wrap">{icon('info')}<p>{T(lang, 'independent_bar')}</p></div></div>
 <div class="suggest" id="suggest" hidden><div class="wrap"><span data-t></span><a href="#"></a><button type="button"></button></div></div>
 <main id="main">
  <section class="hero">
@@ -501,8 +508,8 @@ def page(lang):
     </div>
     <ul class="trust">{trust}</ul>
     <div class="copy">
-     <label for="reflink">{T(lang, 'copy_label')}</label>
-     <div class="row"><input id="reflink" readonly value="{esc(REF)}"><button type="button" data-copy="{esc(REF)}" data-copied="{T(lang, 'copied')}"{gc(f'copy-link-{lang}')}>{T(lang, 'copy')}</button></div>
+     <p class="copy-label">{T(lang, 'copy_label')}</p>
+     <div class="row"><code id="reflink">{esc(REF)}</code><button type="button" data-copy="{esc(REF)}" data-copied="{T(lang, 'copied')}"{gc(f'copy-link-{lang}')}>{T(lang, 'copy')}</button></div>
     </div>
     <p class="disclose">{T(lang, 'disclosure')}</p>
    </div>

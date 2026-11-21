@@ -48,7 +48,7 @@ h1{margin:0;font-family:"Space Grotesk",Inter,"Noto Sans Sinhala","Noto Sans Tam
 </style></head><body>
 <svg class="bg" viewBox="0 0 1200 630"><path d="M640 640 Q980 120 1240 230" fill="none" stroke="#1F4FD1" stroke-opacity=".35" stroke-width="2" stroke-dasharray="5 11"/><path d="M560 660 Q900 40 1240 80" fill="none" stroke="#1F4FD1" stroke-opacity=".16" stroke-width="1.5" stroke-dasharray="3 12"/></svg>
 <div class="l">
- <div class="brand"><svg width="40" height="40" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#111318"/><ellipse cx="16" cy="16" rx="12.5" ry="4.6" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4" transform="rotate(-24 16 16)"/><circle cx="16" cy="16" r="4" fill="#1F4FD1"/><circle cx="26" cy="11.6" r="2.2" fill="#F2A60C"/></svg>Starlink Referral <b>· Sri Lanka</b></div>
+ <div class="brand"><svg width="40" height="40" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#111318"/><ellipse cx="16" cy="16" rx="12.5" ry="4.6" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4" transform="rotate(-24 16 16)"/><circle cx="16" cy="16" r="4" fill="#1F4FD1"/><circle cx="26" cy="11.6" r="2.2" fill="#F2A60C"/></svg>${esc(cfg.site_name)} <b>· ${esc(c.badge)}</b></div>
  <div class="kick">${esc(c.og_text)}</div>
  <h1>${big}</h1>
  <div class="line">${esc(c.og_line)}</div>

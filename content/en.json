@@ -171,7 +171,7 @@
   "notfound_p": "This page doesn't exist. Choose your language:",
   "og_text": "Starlink referral link for Sri Lanka",
   "og_sub": "We both get {reward}",
-  "header_cta": "Get {reward}",
+  "header_cta": "Referral link",
   "trust": [
     "No promo code to type",
     "Same price as everyone",
@@ -202,7 +202,8 @@
     "{reward} for you.",
     "{reward} for me."
   ],
-  "mbar": "Sign up & get {reward}",
+  "mbar": "Order Starlink with my referral link",
   "og_line": "No promo code. Same price. Terms apply.",
-  "analytics_note": "Visits are counted anonymously with GoatCounter – no cookies, no personal data."
+  "analytics_note": "Visits are counted anonymously with GoatCounter – no cookies, no personal data.",
+  "independent_bar": "Independent page by a Starlink customer in Sri Lanka – not the official Starlink website. You order and pay only on starlink.com."
 }
