@@ -684,6 +684,8 @@ def main():
     (DIST / "llms.txt").write_text(llms_txt(), "utf-8")
     (DIST / "_headers").write_text(HEADERS, "utf-8")
     (DIST / ".nojekyll").write_text("", "utf-8")
+    if CFG.get("indexnow_key"):  # IndexNow: lets Bing & co. index new/changed pages instantly
+        (DIST / f"{CFG['indexnow_key']}.txt").write_text(CFG["indexnow_key"], "utf-8")
     assets = ROOT / "assets"
     for f in assets.rglob("*"):
         if f.is_file():
