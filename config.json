@@ -1,0 +1,16 @@
+{
+  "site_url": "https://sahanwewelwala.github.io/starlinkreferealsl",
+  "site_name": "Starlink Referral Sri Lanka",
+  "referral_url": "https://starlink.com/?referral=RC-DF-16480731-31210-83&app_source=share",
+  "reward": {
+    "en": "Rs. 15,000",
+    "si": "රු.15,000",
+    "ta": "ரூ.15,000"
+  },
+  "default_language": "en",
+  "languages": [
+    "en",
+    "si",
+    "ta"
+  ]
+}
