@@ -203,5 +203,6 @@
     "{reward} for me."
   ],
   "mbar": "Sign up & get {reward}",
-  "og_line": "No promo code. Same price. Terms apply."
+  "og_line": "No promo code. Same price. Terms apply.",
+  "analytics_note": "Visits are counted anonymously with GoatCounter – no cookies, no personal data."
 }

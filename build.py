@@ -19,6 +19,7 @@ SITE = CFG["site_url"].rstrip("/")
 LANGS = CFG["languages"]
 DEFAULT = CFG["default_language"]
 REF = CFG["referral_url"]
+GC = CFG.get("goatcounter", "").strip()  # GoatCounter code -> visitor & click counts
 TODAY = datetime.date.today()
 C = {l: json.loads((ROOT / "content" / f"{l}.json").read_text("utf-8")) for l in LANGS}
 
@@ -60,6 +61,11 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
+def gc(event):
+    """GoatCounter click-event attribute (empty when analytics is off)."""
+    return f' data-goatcounter-click="{event}"' if GC else ""
+
+
 def reward(lang):
     return CFG["reward"].get(lang, CFG["reward"][DEFAULT])
 
@@ -75,7 +81,7 @@ def plain(lang, s):
 
 
 def rich(lang, s):
-    link = f'<a class="reflink" href="{esc(REF)}" rel="sponsored noopener">{esc(REF)}</a>'
+    link = f'<a class="reflink" href="{esc(REF)}" rel="sponsored noopener"{gc(f"referral-text-{lang}")}>{esc(REF)}</a>'
     return esc(fill(lang, s)).replace("{link}", link)
 
 
@@ -430,8 +436,8 @@ def lang_switch(lang):
     return "".join(out)
 
 
-def ref_a(cls, inner, extra=""):
-    return f'<a class="{cls}"{extra} href="{esc(REF)}" rel="sponsored noopener">{inner}</a>'
+def ref_a(cls, inner, extra="", place="button"):
+    return f'<a class="{cls}"{extra} href="{esc(REF)}" rel="sponsored noopener"{gc("referral-" + place)}>{inner}</a>'
 
 
 def brand_text():
@@ -477,7 +483,7 @@ def page(lang):
   <a class="brand" href="{rel(lang, page_path(lang))}" aria-label="{esc(CFG['site_name'])}">{LOGO}<span>{brand_text()}</span></a>
   <div class="top-right">
    <nav class="langs" aria-label="{T(lang, 'lang_label')}">{lang_switch(lang)}</nav>
-   {ref_a('hcta', T(lang, 'header_cta'))}
+   {ref_a('hcta', T(lang, 'header_cta'), place=f'header-{lang}')}
   </div>
  </div>
 </header>
@@ -490,13 +496,13 @@ def page(lang):
     <h1><span class="kick">{T(lang, 'h1')}</span><span class="big">{hl(lang, c['h1_sub'], 'mk')}</span></h1>
     <p class="lead">{rich(lang, c['lead'])}</p>
     <div class="ctas">
-     {ref_a('btn btn-primary', T(lang, 'cta') + arrow, ' id="hero-cta"')}
+     {ref_a('btn btn-primary', T(lang, 'cta') + arrow, ' id="hero-cta"', place=f'hero-{lang}')}
      <a class="btn btn-ghost" href="#how">{T(lang, 'cta_secondary')}</a>
     </div>
     <ul class="trust">{trust}</ul>
     <div class="copy">
      <label for="reflink">{T(lang, 'copy_label')}</label>
-     <div class="row"><input id="reflink" readonly value="{esc(REF)}"><button type="button" data-copy="{esc(REF)}" data-copied="{T(lang, 'copied')}">{T(lang, 'copy')}</button></div>
+     <div class="row"><input id="reflink" readonly value="{esc(REF)}"><button type="button" data-copy="{esc(REF)}" data-copied="{T(lang, 'copied')}"{gc(f'copy-link-{lang}')}>{T(lang, 'copy')}</button></div>
     </div>
     <p class="disclose">{T(lang, 'disclosure')}</p>
    </div>
@@ -567,7 +573,7 @@ def page(lang):
    <div class="faq-side">
     <h2 class="h2">{T(lang, 'faq_h2')}</h2>
     <p>{T(lang, 'faq_intro')}</p>
-    {ref_a('btn btn-ink', T(lang, 'faq_cta'))}
+    {ref_a('btn btn-ink', T(lang, 'faq_cta'), place=f'faq-{lang}')}
    </div>
    <div class="faq-list">{faq}</div>
   </div>
@@ -578,7 +584,7 @@ def page(lang):
    <div class="final">
     <h2>{final_lines}</h2>
     <p>{rich(lang, c['final_p'])}</p>
-    {ref_a('btn btn-saffron', T(lang, 'cta') + arrow)}
+    {ref_a('btn btn-saffron', T(lang, 'cta') + arrow, place=f'final-{lang}')}
     <p class="small">{T(lang, 'disclosure')}</p>
    </div>
   </div>
@@ -588,11 +594,13 @@ def page(lang):
  <div class="wrap">
   <nav aria-label="{T(lang, 'footer_langs')}">{foot_langs}</nav>
   <p>{T(lang, 'footer_disclaimer')}</p>
+  {f'<p>{T(lang, "analytics_note")}</p>' if GC else ''}
   <p>{T(lang, 'updated')} · © {TODAY.year} {esc(CFG['site_name'])}</p>
  </div>
 </footer>
-<div class="mbar" id="mbar">{ref_a('', hl(lang, c['mbar'], 'sf'))}</div>
+<div class="mbar" id="mbar">{ref_a('', hl(lang, c['mbar'], 'sf'), place=f'phonebar-{lang}')}</div>
 <script>{js}</script>
+{f'<script data-goatcounter="https://{GC}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>' if GC else ''}
 </body>
 </html>
 """
